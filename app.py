@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import LabelEncoder
 import numpy as np
 
 st.title("Titanic Survival Prediction App")
@@ -30,18 +28,13 @@ input_data = pd.DataFrame({
     'Embarked': [embarked]
 })
 
-# --- Simple Logistic Regression Model Definition ---
-# Example: dummy coefficients for demonstration (replace with real model if needed)
-# Features order: Pclass, Sex, Age, SibSp, Parch, Fare, Embarked
-model = LogisticRegression()
-model.coef_ = np.array([[ -1.0, 1.5, -0.03, -0.2, -0.1, 0.01, 0.3]])
-model.intercept_ = np.array([0.5])
-model.classes_ = np.array([0, 1])
+# --- Manual Logistic Regression Coefficients ---
+model_coef = np.array([[-1.0, 1.5, -0.03, -0.2, -0.1, 0.01, 0.3]])
+model_intercept = np.array([0.5])
 
 # --- Prediction ---
 if st.button("Predict Survival"):
-    # Logistic function manually
-    z = np.dot(input_data.values, model.coef_.T) + model.intercept_
+    z = np.dot(input_data.values, model_coef.T) + model_intercept
     prob = 1 / (1 + np.exp(-z))
     prediction = (prob >= 0.5).astype(int)[0][0]
     
